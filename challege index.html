@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yellow Boxes - Centered Layout</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;               /* full viewport height */
+      background: #f8f9fa;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;     /* horizontal center */
+      align-items: center;         /* vertical center – this fixes the "top" issue */
+      padding: 20px;
+    }
+
+    .main-container {
+      display: flex;
+      align-items: center;         /* all three groups aligned at their vertical center */
+      gap: 50px;                   /* space between left / center / right */
+      flex-wrap: wrap;
+      max-width: 1200px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .group {
+      display: flex;
+      gap: 18px;
+    }
+
+    .group.vertical {
+      flex-direction: column;      /* vertical stack */
+    }
+
+    .group.horizontal {
+      flex-direction: row;         /* horizontal row */
+    }
+
+    .box {
+      width:  110px;
+      height: 110px;
+      background-color: #ffff00;   /* bright yellow */
+      border: 3px solid #e6e600;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+      /* empty – no numbers or text */
+    }
+
+    /* Optional: slightly larger center boxes if needed for visual balance */
+    /* .group.horizontal .box {
+      width:  110px;
+      height: 110px;
+    } */
+
+    @media (max-width: 950px) {
+      .main-container {
+        flex-direction: column;
+        gap: 60px;
+        align-items: center;
+      }
+
+      .group.horizontal {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+
+    <!-- Left: vertical stack of 4 -->
+    <div class="group vertical">
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+    </div>
+
+    <!-- Center: horizontal row of 4 -->
+    <div class="group horizontal">
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+    </div>
+
+    <!-- Right: vertical stack of 4 -->
+    <div class="group vertical">
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+    </div>
+
+  </div>
+
+</body>
+</html>
