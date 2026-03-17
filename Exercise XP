@@ -1,0 +1,115 @@
+import random
+
+# --- Set Operations ---
+# Managing unique favorite numbers and merging collections
+my_fav_numbers = {7, 13, 21, 42}
+my_fav_numbers.add(10)
+my_fav_numbers.add(99)
+my_fav_numbers.remove(99)
+
+friend_fav_numbers = {1, 2, 3, 5, 8}
+our_fav_numbers = my_fav_numbers.union(friend_fav_numbers)
+print(f"Combined favorite numbers: {our_fav_numbers}")
+
+
+# --- Tuple Immutability ---
+# Note: Tuples cannot be modified after creation. 
+# To "add" elements, you must concatenate and create a new tuple object.
+# Example: new_tuple = (1, 2) + (3, 4)
+
+
+# --- List Manipulation ---
+# Dynamic updates to a product basket
+basket = ["Banana", "Apples", "Oranges", "Blueberries"]
+if "Banana" in basket: basket.remove("Banana")
+if "Blueberries" in basket: basket.remove("Blueberries")
+
+basket.append("Kiwi")
+basket.insert(0, "Apples")
+apple_count = basket.count("Apples")
+basket.clear()
+print(f"Final basket state: {basket} | Apple count before clearing: {apple_count}")
+
+
+# --- Sequence Generation ---
+# Generating mixed types (floats and ints) in 0.5 increments
+sequence = []
+val = 1.5
+while val <= 5:
+    sequence.append(int(val) if val.is_integer() else val)
+    val += 0.5
+print(f"Generated sequence: {sequence}")
+
+
+# --- Iteration and Control Flow ---
+print("Integers 1-20:")
+for i in range(1, 21):
+    print(i, end=" ")
+
+print("\nEven numbers in range:")
+for i in range(2, 21, 2):
+    print(i, end=" ")
+print()
+
+
+# --- Input Validation ---
+# Ensuring name input contains at least 3 letters and no digits
+while True:
+    user_name = input("Enter your name: ").strip()
+    if not user_name.isdigit() and len(user_name) >= 3:
+        print("Thank you, name recorded.")
+        break
+    print("Invalid input. Name must be 3+ characters and text-only.")
+
+
+# --- Collection Searching ---
+# Comparing user choice against a list of preferences
+fav_fruits = input("Enter your favorite fruits (separated by space): ").lower().split()
+choice = input("Check a specific fruit: ").lower()
+
+if choice in fav_fruits:
+    print("You chose one of your favorite fruits! Enjoy!")
+else:
+    print("You chose a new fruit. I hope you enjoy it!")
+
+
+# --- Loop-driven Calculations ---
+# Pizza cost calculator: $10 base + $2.50 per topping
+toppings_list = []
+while True:
+    selection = input("Add a topping (or type 'quit'): ").strip().lower()
+    if selection == 'quit':
+        break
+    print(f"Adding {selection} to your pizza.")
+    toppings_list.append(selection)
+
+total_price = 10 + (len(toppings_list) * 2.5)
+print(f"Toppings: {toppings_list} | Total Price: ${total_price:.2f}")
+
+
+# --- Conditional Logic (Ticketing) ---
+# Age-based pricing for Cinemax
+family_ages = input("Enter family ages (space separated): ").split()
+bill = 0
+
+for age_val in family_ages:
+    age = int(age_val)
+    if 3 <= age <= 12:
+        bill += 10
+    elif age > 12:
+        bill += 15
+
+print(f"Total family ticket cost: ${bill}")
+
+
+# --- Filtered Lists (Restricted Movie) ---
+# Filtering a group based on age requirements (16-21)
+group = ["Alice", "Bob", "Charlie", "David"]
+allowed = []
+
+for person in group:
+    age = int(input(f"Enter age for {person}: "))
+    if 16 <= age <= 21:
+        allowed.append(person)
+
+print(f"Authorized attendees: {allowed}")
