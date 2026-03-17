@@ -1,0 +1,63 @@
+
+
+#   Hello World
+# Instructions: Print the following output using one line of code:
+# Hello world (x4)
+print("Hello world\n" * 4)
+
+#  Some Math
+# Instructions: Write code that calculates the result of: (99^3)*8
+print((99**3) * 8)
+
+#   What is the output?
+# Predict the output of the following code snippets:
+# 5 < 3 -> False
+# 3 == 3 -> True
+# 3 == "3" -> False
+# "3" > 3 -> TypeError
+# "Hello" == "hello" -> False
+
+# Your computer brand
+# Instructions: Create a variable called computer_brand... print a sentence.
+computer_brand = "MacBook"
+print(f"I have a {computer_brand} computer.")
+
+# Your information
+# Instructions: Create name, age, shoe_size, and info variables.
+name = "Alex"
+age = 25
+shoe_size = 42
+info = f"My name is {name}, I am {age} years old, my shoe size is {shoe_size}, and I love Python!"
+print(info)
+
+# Exercise 6: A & B
+# Instructions: If a is bigger than b, print "Hello World".
+a = 10
+b = 5
+if a > b:
+    print("Hello World")
+
+#  Odd or Even
+# Instructions: Ask the user for a number and determine if it's odd or even.
+user_num = int(input("Enter a number: "))
+if user_num % 2 == 0:
+    print("Even")
+else:
+    print("Odd")
+
+#  What’s your name?
+# Instructions: Ask user for name and compare it to yours.
+my_name = "Alex"
+user_name = input("What is your name? ")
+if user_name == my_name:
+    print("Wait... are you me from the future?")
+else:
+    print(f"Nice to meet you, {user_name}!")
+
+#  Tall enough to ride a roller coaster
+# Instructions: Ask for height in cm. If > 145cm, they can ride.
+height = int(input("What is your height in cm? "))
+if height > 145:
+    print("You are tall enough to ride!")
+else:
+    print("You need to grow some more to ride.")
