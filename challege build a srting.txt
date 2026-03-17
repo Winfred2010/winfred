@@ -1,0 +1,38 @@
+
+# 1. Ask the user for a string (must be 10 characters long).
+# 2. If it's less than 10, print "string not long enough".
+# 3. If it's more than 10, print "string too long".
+# 4. Print the first and last characters.
+# 5. Build the string character by character.
+# 6. Bonus: Shuffle the string.
+
+import random
+
+# Get user input
+user_input = input("Please enter a string of exactly 10 characters: ")
+
+length = len(user_input)
+
+if length < 10:
+    print("string not long enough")
+elif length > 10:
+    print("string too long")
+else:
+    print("perfect string")
+
+    # Show first and last characters
+    print(f"First character: {user_input[0]}")
+    print(f"Last character: {user_input[-1]}")
+
+    # Build the string progressively
+    print("\nConstructing string:")
+    current_string = ""
+    for char in user_input:
+        current_string += char
+        print(current_string)
+
+    # Bonus: Jumble the string
+    char_list = list(user_input)
+    random.shuffle(char_list)
+    jumbled_string = "".join(char_list)
+    print(f"\nBonus (Jumbled): {jumbled_string}")
