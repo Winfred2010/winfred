@@ -1,0 +1,81 @@
+def manage_sets():
+    """Exercise 1: Set Operations"""
+    my_fav_numbers = {7, 11, 21}
+    my_fav_numbers.update({42, 99})
+    # Removing the last specific addition
+    my_fav_numbers.remove(99)
+    
+    friend_fav_numbers = {3, 11, 55}
+    our_fav_numbers = my_fav_numbers.union(friend_fav_numbers)
+    print(f"Set Results: {our_fav_numbers}")
+
+def manage_lists():
+    """Exercise 3: List Manipulation"""
+    basket = ["Banana", "Apples", "Oranges", "Blueberries"]
+    basket.remove("Banana")
+    basket.remove("Blueberries")
+    basket.append("Kiwi")
+    basket.insert(0, "Apples")
+    
+    apple_count = basket.count("Apples")
+    basket.clear()
+    print(f"Apple Count: {apple_count} | Final Basket: {basket}")
+
+def generate_floats():
+    """Exercise 4: Float Sequence Generation"""
+    # Generating 1.5 to 5.0 with 0.5 increments
+    sequence = [x / 2 for x in range(3, 11)]
+    print(f"Float Sequence: {sequence}")
+
+def validate_name():
+    """Exercise 6: While Loop Validation"""
+    while True:
+        name = input("\nEnter your name: ")
+        if not name.isdigit() and len(name) >= 3:
+            print("Thank you!")
+            break
+        print("Invalid. Name must be letters only and at least 3 chars long.")
+
+def pizza_calculator():
+    """Exercise 8: Pizza Toppings & Cost"""
+    toppings = []
+    base_price = 10
+    while True:
+        item = input("Enter topping (or 'quit'): ").lower()
+        if item == 'quit':
+            break
+        toppings.append(item)
+        print(f"Adding {item} to your pizza.")
+    
+    total = base_price + (len(toppings) * 2.50)
+    print(f"Total Cost: ${total:.2f}")
+
+def cinemax_tickets():
+    """Exercise 9: Movie Pricing & Age Restriction"""
+    try:
+        ages_raw = input("\nEnter ages of family members (space separated): ")
+        ages = [int(a) for a in ages_raw.split()]
+        
+        total = 0
+        for age in ages:
+            if 3 <= age <= 12:
+                total += 10
+            elif age > 12:
+                total += 15
+        print(f"Total Ticket Cost: ${total}")
+
+        # Bonus: Restricted (16-21)
+        allowed = [a for a in ages if 16 <= a <= 21]
+        print(f"Allowed for restricted movie (16-21): {allowed}")
+    except ValueError:
+        print("Error: Please enter numbers only.")
+
+if __name__ == "__main__":
+    # Running specific exercises for demonstration
+    manage_sets()
+    manage_lists()
+    generate_floats()
+    # To run interactive ones, uncomment below:
+    # validate_name()
+    # pizza_calculator()
+    # cinemax_tickets()
