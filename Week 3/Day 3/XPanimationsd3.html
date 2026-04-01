@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Timing Events - Exercises</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        /* Styles */
+        #ex1-container {
+            min-height: 100px;
+            background: #f5f5f5;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        #ex1-container p {
+            background: yellow;
+            color: red;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background: #5a67d8;
+            transform: scale(1.05);
+        }
+        
+        .btn-stop {
+            background: #e53e3e;
+        }
+        
+        .btn-stop:hover {
+            background: #c53030;
+        }
+        
+        /* Styles */
+        #animation-container {
+            width: 400px;
+            height: 400px;
+            position: relative;
+            background: yellow;
+            border: 3px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        
+        #box {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            background-color: red;
+            border-radius: 4px;
+            top: 0;
+            left: 0;
+            transition: none;
+        }
+        
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!--  setTimeout and setInterval -->
+        <div class="card">
+            <h2>Exercise 1: Timing Events</h2>
+            
+            <h3> setTimeout</h3>
+            <p>Click the button to trigger setTimeout (2 seconds delay)</p>
+            <button class="btn" id="timeoutBtn">Trigger Timeout</button>
+            
+            <h3 style="margin-top: 20px;">Part III: setInterval</h3>
+            <p>Paragraphs will be added every 2 seconds. Auto-stops at 5 paragraphs or click stop.</p>
+            <button class="btn" id="startInterval">Start Interval</button>
+            <button class="btn btn-stop" id="clearInterval">Stop Interval</button>
+            
+            <div id="ex1-container"></div>
+            <div class="status" id="ex1-status">Status: Ready</div>
+        </div>
+
+        <!-- Move the Box -->
+        <div class="card">
+            <h2>Move the Box</h2>
+            <p>Click the button to animate the red box across the yellow container.</p>
+            
+            <button class="btn" id="moveBtn">Click Me to Animate</button>
+            <button class="btn btn-stop" id="resetBtn">Reset Position</button>
+            
+            <div id="animation-container">
+                <div id="box"></div>
+            </div>
+            
+            <div class="status" id="ex2-status">Position: 0px / 350px</div>
+        </div>
+    </div>
+
+    <script>
+        // =================================================================
+        // TIMING EVENTS
+        // =================================================================
+        
+        const container = document.getElementById('ex1-container');
+        const timeoutBtn = document.getElementById('timeoutBtn');
+        const startIntervalBtn = document.getElementById('startInterval');
+        const clearIntervalBtn = document.getElementById('clearInterval');
+        const ex1Status = document.getElementById('ex1-status');
+        
+        let intervalId = null;
+        let paragraphCount = 0;
+        
+        //  setTimeout - Alert and Add Paragraph
+        timeoutBtn.addEventListener('click', () => {
+            ex1Status.textContent = 'Status: Timeout set (waiting 2 seconds...)';
+            
+            setTimeout(() => {
+                // Part I: Alert
+                alert('Hello World');
+                
+                // Part II: Add paragraph
+                const p = document.createElement('p');
+                p.textContent = 'Hello World (from setTimeout)';
+                container.appendChild(p);
+                
+                ex1Status.textContent = 'Status: Timeout completed - Alert shown and paragraph added';
+            }, 2000);
+        });
+        
+        // Part III: setInterval - Add paragraph every 2 seconds
+        startIntervalBtn.addEventListener('click', () => {
+            if (intervalId) return; // Prevent multiple intervals
+            
+            paragraphCount = 0;
+            container.innerHTML = ''; // Clear previous paragraphs
+            ex1Status.textContent = 'Status: Interval running (0/5 paragraphs)';
+            
+            intervalId = setInterval(() => {
+                // Check if already at 5 paragraphs
+                if (paragraphCount >= 5) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                    ex1Status.textContent = 'Status: Auto-stopped at 5 paragraphs';
+                    return;
+                }
+                
+                // Add new paragraph
+                const p = document.createElement('p');
+                p.textContent = `Hello World #${paragraphCount + 1}`;
+                container.appendChild(p);
+                paragraphCount++;
+                
+                ex1Status.textContent = `Status: Interval running (${paragraphCount}/5 paragraphs)`;
+                
+                // Auto-clear at exactly 5
+                if (paragraphCount === 5) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                    ex1Status.textContent = 'Status: Auto-stopped at 5 paragraphs';
+                }
+            }, 2000);
+        });
+        
+        // Manual clear interval
+        clearIntervalBtn.addEventListener('click', () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+                ex1Status.textContent = `Status: Manually stopped at ${paragraphCount} paragraphs`;
+            }
+        });
+        
+        // =================================================================
+        //  MOVE THE BOX
+        // =================================================================
+        
+        const box = document.getElementById('box');
+        const moveBtn = document.getElementById('moveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const ex2Status = document.getElementById('ex2-status');
+        
+        const CONTAINER_WIDTH = 400;
+        const BOX_WIDTH = 50;
+        const MAX_POSITION = CONTAINER_WIDTH - BOX_WIDTH; // 350px
+        
+        let animationId = null;
+        let position = 0;
+        
+        function myMove() {
+            // Prevent multiple animations
+            if (animationId) return;
+            
+            // Reset position if already at end
+            if (position >= MAX_POSITION) {
+                position = 0;
+                box.style.left = '0px';
+            }
+            
+            ex2Status.textContent = `Status: Animating...`;
+            
+            animationId = setInterval(() => {
+                if (position >= MAX_POSITION) {
+                    clearInterval(animationId);
+                    animationId = null;
+                    ex2Status.textContent = `Position: ${MAX_POSITION}px / ${MAX_POSITION}px - Complete!`;
+                    return;
+                }
+                
+                position++;
+                box.style.left = position + 'px';
+                ex2Status.textContent = `Position: ${position}px / ${MAX_POSITION}px`;
+            }, 1); // 1px every 1ms = smooth animation
+        }
+        
+        function resetBox() {
+            if (animationId) {
+                clearInterval(animationId);
+                animationId = null;
+            }
+            position = 0;
+            box.style.left = '0px';
+            ex2Status.textContent = `Position: 0px / ${MAX_POSITION}px - Reset`;
+        }
+        
+        moveBtn.addEventListener('click', myMove);
+        resetBtn.addEventListener('click', resetBox);
+    </script>
+</body>
+</html>
