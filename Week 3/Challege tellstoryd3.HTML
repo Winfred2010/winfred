@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Mad Libs Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 2.5em;
+        }
+        
+        form {
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        label {
+            width: 100px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        #lib-button {
+            background: #667eea;
+            color: white;
+        }
+        
+        #lib-button:hover {
+            background: #5a67d8;
+            transform: scale(1.02);
+        }
+        
+        #shuffle-button {
+            background: #48bb78;
+            color: white;
+        }
+        
+        #shuffle-button:hover {
+            background: #38a169;
+            transform: scale(1.02);
+        }
+        
+        #story-container {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        #story {
+            font-size: 1.1em;
+            color: #2d3748;
+            font-style: italic;
+            line-height: 1.8;
+        }
+        
+        .empty {
+            color: #999;
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Mad Libs</h1>
+
+        <form id="libform">
+            <div class="input-group">
+                <label for="noun">Noun:</label>
+                <input type="text" id="noun" placeholder="e.g., dragon">
+            </div>
+            
+            <div class="input-group">
+                <label for="adjective">Adjective:</label>
+                <input type="text" id="adjective" placeholder="e.g., sparkly">
+            </div>
+            
+            <div class="input-group">
+                <label for="person">Name:</label>
+                <input type="text" id="person" placeholder="e.g., Alice">
+            </div>
+            
+            <div class="input-group">
+                <label for="verb">Verb:</label>
+                <input type="text" id="verb" placeholder="e.g., dance">
+            </div>
+            
+            <div class="input-group">
+                <label for="place">Place:</label>
+                <input type="text" id="place" placeholder="e.g., Paris">
+            </div>
+            
+            <div class="buttons">
+                <button id="lib-button" type="submit">Lib it!</button>
+                <button id="shuffle-button" type="button">Shuffle Story</button>
+            </div>
+        </form>
+
+        <div id="story-container">
+            <p id="story" class="empty">Your story will appear here...</p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('libform');
+        const storyDisplay = document.getElementById('story');
+        const shuffleBtn = document.getElementById('shuffle-button');
+
+        // Story templates
+        const storyTemplates = [
+            (noun, adj, person, verb, place) => 
+                `${person} went to ${place} to find a ${adj} ${noun} and decided to ${verb} all day.`,
+            
+            (noun, adj, person, verb, place) => 
+                `It was a ${adj} day when ${person} saw a ${noun} ${verb}ing in the middle of ${place}.`,
+            
+            (noun, adj, person, verb, place) => 
+                `In the land of ${place}, ${person} found a ${noun}. It was so ${adj} that they had to ${verb} immediately!`
+        ];
+
+        function getInputs() {
+            return {
+                noun: document.getElementById('noun').value.trim(),
+                adjective: document.getElementById('adjective').value.trim(),
+                person: document.getElementById('person').value.trim(),
+                verb: document.getElementById('verb').value.trim(),
+                place: document.getElementById('place').value.trim()
+            };
+        }
+
+        function validateInputs(inputs) {
+            return Object.values(inputs).every(value => value !== '');
+        }
+
+        function generateStory(event) {
+            if (event) event.preventDefault();
+
+            const inputs = getInputs();
+
+            if (!validateInputs(inputs)) {
+                alert("Please fill in all the blanks!");
+                return;
+            }
+
+            // Pick random template and generate story
+            const randomIndex = Math.floor(Math.random() * storyTemplates.length);
+            const story = storyTemplates[randomIndex](
+                inputs.noun, 
+                inputs.adjective, 
+                inputs.person, 
+                inputs.verb, 
+                inputs.place
+            );
+
+            storyDisplay.textContent = story;
+            storyDisplay.classList.remove('empty');
+        }
+
+        // Event listeners
+        form.addEventListener('submit', generateStory);
+        shuffleBtn.addEventListener('click', generateStory);
+    </script>
+
+</body>
+</html>
