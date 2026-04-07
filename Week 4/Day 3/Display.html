@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Step 2: Display Data</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; }
+        section { 
+            padding: 20px; 
+            border-left: 5px solid #2ecc71; 
+            background-color: #f9f9f9; 
+            font-size: 1.2rem;
+        }
+        .highlight { font-weight: bold; color: #27ae60; }
+    </style>
+</head>
+<body>
+    <h1>Submission Received</h1>
+    
+    <section id="output-section">
+        Retrieving data...
+    </section>
+
+    <script>
+        // 1. Grab the query string from the URL (?firstname=...&lastname=...)
+        const queryString = window.location.search;
+        
+        // 2. Use URLSearchParams to parse the string
+        const urlParams = new URLSearchParams(queryString);
+        
+        const firstName = urlParams.get('firstname');
+        const lastName = urlParams.get('lastname');
+
+        // 3. Select the DOM element
+        const outputSection = document.getElementById('output-section');
+
+        // 4. Display the data
+        if (firstName && lastName) {
+            outputSection.innerHTML = `
+                <p>Welcome, <span class="highlight">${firstName} ${lastName}</span>!</p>
+                <p>Your data was successfully transmitted via the URL.</p>
+            `;
+        } else {
+            outputSection.textContent = "No valid user data found in the URL.";
+        }
+    </script>
+</body>
+</html>

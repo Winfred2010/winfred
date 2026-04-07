@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Display Data</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        section { padding: 15px; border: 2px solid #007bff; border-radius: 8px; background-color: #f8f9fa; }
+        span { font-weight: bold; color: #007bff; }
+    </style>
+</head>
+<body>
+    <h2>Submitted Data</h2>
+    
+    <section id="display-section">
+        Loading data...
+    </section>
+
+    <script>
+        // 1. Get the parameters from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // 2. Extract values using the 'name' attributes from the form
+        const name = urlParams.get('name');
+        const lastname = urlParams.get('lastname');
+
+        // 3. Select the section tag via DOM
+        const displaySection = document.getElementById('display-section');
+
+        // 4. Update the section content
+        if (name && lastname) {
+            displaySection.innerHTML = `
+                <p>First Name: <span>${name}</span></p>
+                <p>Last Name: <span>${lastname}</span></p>
+            `;
+        } else {
+            displaySection.textContent = "No data received.";
+        }
+    </script>
+</body>
+</html>
