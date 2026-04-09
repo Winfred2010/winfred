@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Giphy Ninja</title>
+    <style>
+        #gif-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .gif-item { border: 1px solid #ccc; padding: 5px; }
+        button { cursor: pointer; margin: 5px; }
+    </style>
+</head>
+<body>
+
+    <form id="search-form">
+        <input type="text" id="category" placeholder="Search for a gif..." required>
+        <button type="submit">Fetch Gif</button>
+    </form>
+
+    <button id="delete-all" style="background-color: #ff4d4d; color: white;">Delete All GIFs</button>
+
+    <div id="gif-container"></div>
+
+    <script>
+        // IMPORTANT: Do not push your real API key to GitHub. 
+        const API_KEY = "YOUR_API_KEY_HERE"; 
+        const form = document.getElementById('search-form');
+        const container = document.getElementById('gif-container');
+        const deleteBtn = document.getElementById('delete-all');
+        const input = document.getElementById('category');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const searchTerm = input.value.trim();
+            if (!searchTerm) return;
+
+            const url = `https://api.giphy.com/v1/gifs/search?q=${searchTerm}&limit=1&api_key=${API_KEY}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Network error");
+                
+                const resData = await response.json();
+                if (resData.data && resData.data.length > 0) {
+                    appendGif(resData.data[0].images.fixed_height.url, searchTerm);
+                    input.value = ""; // Clear input after search
+                }
+            } catch (err) {
+                console.error("Error fetching GIF:", err);
+            }
+        });
+
+        function appendGif(url, altText) {
+            const div = document.createElement('div');
+            div.className = 'gif-item';
+            
+            const img = document.createElement('img');
+            img.src = url;
+            img.alt = altText;
+
+            const br = document.createElement('br');
+
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Remove';
+            removeBtn.addEventListener('click', () => div.remove());
+
+            div.appendChild(img);
+            div.appendChild(br);
+            div.appendChild(removeBtn);
+            container.appendChild(div);
+        }
+
+        deleteBtn.addEventListener('click', () => {
+            container.innerHTML = "";
+        });
+    </script>
+</body>
+</html>
