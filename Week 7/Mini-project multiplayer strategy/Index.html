@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Siege Strategy</title>
+    <style>
+        :root { --bg: #0f172a; --card: #1e293b; --p1: #3b82f6; --p2: #ef4444; --text: #f8fafc; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 24px; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { margin: 0; font-size: 2.4rem; letter-spacing: 1px; }
+        .header p { margin-top: 8px; color: #94a3b8; }
+        .game-area { display: flex; gap: 32px; background: var(--card); padding: 24px; border-radius: 20px; box-shadow: 0 28px 60px rgba(0,0,0,0.3); flex-wrap: wrap; justify-content: center; }
+        #grid { display: grid; grid-template-columns: repeat(10, 44px); grid-template-rows: repeat(10, 44px); gap: 6px; background: #334155; padding: 8px; border-radius: 12px; }
+        .cell { background: #0f172a; border-radius: 10px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .obstacle { background: #475569; }
+        .base-p1 { border: 2px dashed var(--p1); }
+        .base-p2 { border: 2px dashed var(--p2); }
+        .token { width: 32px; height: 32px; border-radius: 50%; box-shadow: 0 8px 18px rgba(15,23,42,.45); }
+        .token-p1 { background: var(--p1); border: 3px solid #93c5fd; }
+        .token-p2 { background: var(--p2); border: 3px solid #fecaca; }
+        .controls { max-width: 260px; display: flex; flex-direction: column; gap: 18px; }
+        .turn-card { background: #1e293b; padding: 18px; border-radius: 16px; text-align: center; }
+        .turn-card.active-p1 { box-shadow: inset 0 0 0 2px rgba(59,130,246,.2); }
+        .turn-card.active-p2 { box-shadow: inset 0 0 0 2px rgba(239,68,68,.2); }
+        .turn-card small { color: #94a3b8; }
+        .turn-card h2 { margin: 10px 0 0; font-size: 1.5rem; }
+        .d-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .d-pad button, .cta-button { padding: 14px 16px; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; letter-spacing: .5px; color: white; }
+        .d-pad button { background: #475569; }
+        .d-pad button:hover, .cta-button:hover { filter: brightness(1.05); }
+        .attack-button { background: #10b981; }
+        .reset-button { background: transparent; color: #ef4444; border: 1px solid #ef4444; }
+        .legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 14px; color: #94a3b8; }
+        .legend span { display: inline-flex; align-items: center; gap: 8px; }
+        .legend .dot { width: 12px; height: 12px; border-radius: 999px; display: inline-block; }
+        .legend .p1 { background: var(--p1); }
+        .legend .p2 { background: var(--p2); }
+        .legend .obs { background: #64748b; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>GRID SIEGE</h1>
+        <p id="message">Capture the enemy corner to win.</p>
+    </div>
+    <div class="game-area">
+        <div id="grid"></div>
+        <div class="controls">
+            <div id="turn-card" class="turn-card active-p1">
+                <small>CURRENT TURN</small>
+                <h2 id="turn-name">Blue Team</h2>
+            </div>
+            <div class="d-pad">
+                <div></div>
+                <button onclick="move('up')">UP</button>
+                <div></div>
+                <button onclick="move('left')">LEFT</button>
+                <button onclick="move('down')">DOWN</button>
+                <button onclick="move('right')">RIGHT</button>
+            </div>
+            <button id="attackBtn" class="cta-button attack-button" onclick="attack()">Attack Base</button>
+            <button class="cta-button reset-button" onclick="reset()">Reset Game</button>
+            <div class="legend">
+                <span><span class="dot p1"></span> Player 1</span>
+                <span><span class="dot p2"></span> Player 2</span>
+                <span><span class="dot obs"></span> Obstacle</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function updateUI() {
+            const res = await fetch('/api/game/status');
+            const state = await res.json();
+            const turnName = document.getElementById('turn-name');
+            const turnCard = document.getElementById('turn-card');
+            const message = document.getElementById('message');
+            const attackBtn = document.getElementById('attackBtn');
+
+            if (state.winner) {
+                turnName.innerText = 'Game Over';
+                turnCard.className = 'turn-card';
+                message.innerHTML = `<strong style="color: gold">?? ${state.players[state.winner].name} wins!</strong>`;
+                attackBtn.disabled = true;
+            } else {
+                turnName.innerText = state.players[state.turn].name;
+                turnCard.className = `turn-card active-${state.turn}`;
+                const opponentBase = state.turn === 'p1' ? { x: 9, y: 9 } : { x: 0, y: 0 };
+                const current = state.players[state.turn];
+                const adjacent = Math.abs(current.x - opponentBase.x) + Math.abs(current.y - opponentBase.y) === 1;
+                message.innerText = adjacent ? 'Enemy base in range — attack now!' : 'Move carefully and reach the opponent base.';
+                attackBtn.disabled = !adjacent;
+            }
+
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            for (let y = 0; y < 10; y++) {
+                for (let x = 0; x < 10; x++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    if (x === 0 && y === 0) cell.classList.add('base-p1');
+                    if (x === 9 && y === 9) cell.classList.add('base-p2');
+                    if (state.obstacles.some(o => o.x === x && o.y === y)) cell.classList.add('obstacle');
+                    if (state.players.p1.x === x && state.players.p1.y === y) {
+                        cell.innerHTML = '<div class="token token-p1"></div>';
+                    } else if (state.players.p2.x === x && state.players.p2.y === y) {
+                        cell.innerHTML = '<div class="token token-p2"></div>';
+                    }
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        async function move(direction) {
+            const res = await fetch('/api/game/move', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ direction })
+            });
+            if (!res.ok) {
+                const err = await res.json();
+                alert(err.message);
+            }
+            updateUI();
+        }
+
+        async function attack() {
+            const res = await fetch('/api/game/attack', { method: 'POST' });
+            if (!res.ok) {
+                const err = await res.json();
+                alert(err.message);
+            }
+            updateUI();
+        }
+
+        async function reset() {
+            await fetch('/api/game/reset', { method: 'POST' });
+            updateUI();
+        }
+
+        updateUI();
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            margin: 30px;
+        }
+        h1 {
+            font-size: 32px;
+            margin-bottom: 25px;
+        }
+        .row {
+            margin-bottom: 12px;
+        }
+        label {
+            display: inline-block;
+            width: 80px;
+            font-size: 18px;
+        }
+        input {
+            border: 1px solid #767676;
+            padding: 1px;
+        }
+        button {
+            margin-top: 15px;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+        }
+        #msg {
+            margin-top: 50px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Login :</h1>
+
+    <form id="logForm">
+        <div class="row"><label>Username</label><input type="text" id="u"></div>
+        <div class="row"><label>Password</label><input type="password" id="p"></div>
+        <button type="submit" id="logBtn" disabled>Login</button>
+    </form>
+
+    <div id="msg"></div>
+
+    <script>
+        const form = document.getElementById('logForm');
+        const u = document.getElementById('u');
+        const p = document.getElementById('p');
+        const btn = document.getElementById('logBtn');
+        const display = document.getElementById('msg');
+
+        form.oninput = () => {
+            btn.disabled = !(u.value.trim() && p.value.trim());
+        };
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username: u.value, password: p.value})
+            });
+            const data = await res.json();
+            display.innerText = data.message || 'Login failed';
+            display.style.color = res.ok ? '#0b6e20' : '#b91c1c';
+        };
+    </script>
+</body>
+</html>
