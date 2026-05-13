@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  background-color: #3e3636;
+  color: white;
+  padding: 15px;
+}
+
+.form-section {
+  background-color: #d4b483;
+  padding: 10px;
+}
+
+.form-section input[type="text"] {
+  width: 50%;
+  padding: 6px;
+  font-size: 14px;
+}
+
+.form-section select {
+  font-size: 14px;
+}
+
+.checkbox-label {
+  display: block;
+  margin-left: 20px;
+}
+
+.form-section button {
+  padding: 10px 25px;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+hr {
+  margin: 0;
+}
+
+.info-section {
+  background-color: #1e555c;
+  color: white;
+  padding: 20px;
+  min-height: 300px;
+}
+
+.info-section h2 {
+  margin-bottom: 20px;
+}
+
+.info-section p {
+  padding: 10px 0;
+  font-size: 16px;
+}
+
+.restrictions {
+  padding-left: 10px;
+  line-height: 1.6;
+}
