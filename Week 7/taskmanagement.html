@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Management</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f5f7fb; }
+    h1 { margin-bottom: 12px; }
+    .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); max-width: 600px; }
+    .task-list { margin-top: 20px; list-style: none; padding: 0; }
+    .task-list li { display: flex; align-items: center; justify-content: space-between; padding: 12px 10px; border-bottom: 1px solid #e2e8f0; }
+    .task-list li.completed .title { text-decoration: line-through; color: #6b7280; }
+    .task-actions button { margin-left: 8px; }
+    button { cursor: pointer; border: none; border-radius: 6px; background: #2563eb; color: white; padding: 8px 12px; }
+    .secondary { background: #64748b; }
+    input { width: calc(100% - 100px); padding: 10px; margin-right: 10px; border: 1px solid #cbd5e1; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Task Manager</h1>
+    <div>
+      <input id="taskTitle" placeholder="New task title" />
+      <button id="addTask">Add Task</button>
+    </div>
+    <ul id="tasks" class="task-list"></ul>
+  </div>
+
+  <script>
+    const taskTitle = document.getElementById('taskTitle');
+    const addTask = document.getElementById('addTask');
+    const tasks = document.getElementById('tasks');
+
+    async function loadTasks() {
+      const res = await fetch('/tasks');
+      const data = await res.json();
+      tasks.innerHTML = data.map(task => {
+        return `<li class="${task.completed ? 'completed' : ''}">
+          <span class="title">${task.title}</span>
+          <span class="task-actions">
+            <button onclick="toggle(${task.id}, ${task.completed})">${task.completed ? 'Undo' : 'Done'}</button>
+            <button class="secondary" onclick="removeTask(${task.id})">Delete</button>
+          </span>
+        </li>`;
+      }).join('');
+    }
+
+    async function toggle(id, completed) {
+      await fetch(`/tasks/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed: !completed })
+      });
+      loadTasks();
+    }
+
+    async function removeTask(id) {
+      await fetch(`/tasks/${id}`, { method: 'DELETE' });
+      loadTasks();
+    }
+
+    addTask.onclick = async () => {
+      const title = taskTitle.value.trim();
+      if (!title) return;
+      await fetch('/tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title })
+      });
+      taskTitle.value = '';
+      loadTasks();
+    };
+
+    loadTasks();
+  </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE product_orders (
+    order_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE items (
+    item_id SERIAL PRIMARY KEY,
+    order_id INT REFERENCES product_orders(order_id) ON DELETE CASCADE,
+    item_name VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);
+
+CREATE OR REPLACE FUNCTION get_order_total(p_order_id INT) 
+RETURNS DECIMAL AS $$
+BEGIN
+    RETURN (SELECT SUM(price) FROM items WHERE order_id = p_order_id);
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_user_order_total(p_user_id INT, p_order_id INT) 
+RETURNS DECIMAL AS $$
+BEGIN
+    RETURN (
+        SELECT SUM(i.price) 
+        FROM items i
+        JOIN product_orders o ON i.order_id = o.order_id
+        WHERE o.user_id = p_user_id AND o.order_id = p_order_id
+    );
+END;
+$$ LANGUAGE plpgsql;
+
+INSERT INTO users (username) VALUES ('Alice');
+INSERT INTO product_orders (user_id) VALUES (1);
+INSERT INTO items (order_id, item_name, price) VALUES (1, 'Laptop', 1200.00), (1, 'Mouse', 25.00);
+
+SELECT get_order_total(1);
+SELECT get_user_order_total(1, 1);

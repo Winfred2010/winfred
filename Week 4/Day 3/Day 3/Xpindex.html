@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML Forms: GET vs POST</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f7f6; }
+        
+        /* Shared form styling */
+        form { 
+            margin-bottom: 30px; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background-color: white;
+        }
+
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input[type="text"], textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; }
+
+        /* GET Form - Blue Theme */
+        .get-form { border-left: 10px solid #3498db; }
+        .get-btn { background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        .get-btn:hover { background-color: #2980b9; }
+
+        /* POST Form - Teal/Green Theme */
+        .post-form { border-left: 10px solid #1abc9c; }
+        .post-btn { background-color: #1abc9c; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        .post-btn:hover { background-color: #16a085; }
+    </style>
+</head>
+<body>
+
+    <h2 style="color: #3498db;">GET Method (Visible in URL)</h2>
+    <form action="#" method="GET" class="get-form">
+        <label for="name1">Name:</label>
+        <input type="text" id="name1" name="username" required>
+
+        <label for="msg1">Message:</label>
+        <textarea id="msg1" name="user_message" rows="4"></textarea>
+
+        <br><br>
+        <input type="submit" value="Send (GET)" class="get-btn">
+    </form>
+
+    <h2 style="color: #1abc9c;">POST Method (Hidden in Body)</h2>
+    <form action="#" method="POST" class="post-form">
+        <label for="name2">Name:</label>
+        <input type="text" id="name2" name="username" required>
+
+        <label for="msg2">Message:</label>
+        <textarea id="msg2" name="user_message" rows="4"></textarea>
+
+        <br><br>
+        <input type="submit" value="Send (POST)" class="post-btn">
+    </form>
+
+</body>
+</html>

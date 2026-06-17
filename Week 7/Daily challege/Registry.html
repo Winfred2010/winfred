@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Page</title>
+    <style>
+        /* Exact styling to match your image */
+        body {
+            font-family: "Times New Roman", Times, serif;
+            margin: 40px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .row {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: inline-block;
+            width: 85px; 
+            font-size: 18px;
+        }
+
+        input {
+            padding: 1px 3px;
+            font-size: 15px;
+            border: 1px solid #767676;
+        }
+
+        button {
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        /* This places the message far below the button */
+        #msg-container {
+            margin-top: 50px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Register :</h1>
+
+    <form id="regForm">
+        <div class="row">
+            <label>First name</label>
+            <input type="text" id="fn" required>
+        </div>
+
+        <div class="row">
+            <label>Last name</label>
+            <input type="text" id="ln" required>
+        </div>
+
+        <div class="row">
+            <label>Email</label>
+            <input type="email" id="em" required>
+        </div>
+
+        <div class="row">
+            <label>username</label>
+            <input type="text" id="un" required>
+        </div>
+
+        <div class="row">
+            <label>password</label>
+            <input type="password" id="pw" required>
+        </div>
+
+        <button type="submit" id="btn" disabled>Register</button>
+    </form>
+
+    <!-- The message appears here -->
+    <div id="msg-container"></div>
+
+    <script>
+        const form = document.getElementById('regForm');
+        const btn = document.getElementById('btn');
+        const msg = document.getElementById('msg-container');
+        const inputs = form.querySelectorAll('input');
+
+        // Disable button if inputs are empty
+        form.addEventListener('input', () => {
+            let empty = false;
+            inputs.forEach(i => { if(!i.value.trim()) empty = true; });
+            btn.disabled = empty;
+        });
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            
+            const userData = {
+                firstName: document.getElementById('fn').value,
+                lastName: document.getElementById('ln').value,
+                email: document.getElementById('em').value,
+                username: document.getElementById('un').value,
+                password: document.getElementById('pw').value
+            };
+
+            const res = await fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData)
+            });
+
+            const data = await res.json();
+            msg.innerText = data.message || 'Registration failed';
+            msg.style.color = res.ok ? '#0b6e20' : '#b91c1c';
+        };
+    </script>
+</body>
+</html>

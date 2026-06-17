@@ -1,0 +1,47 @@
+body { font-family: sans-serif; background: #f4f4f4; }
+
+.main-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#palette {
+    display: grid;
+    grid-template-columns: repeat(3, 30px);
+    gap: 5px;
+}
+
+.color-swatch {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+#grid-container {
+    display: grid;
+    /* 60 columns of 15px each */
+    grid-template-columns: repeat(60, 15px);
+    grid-template-rows: repeat(40, 15px);
+    background: white;
+    border: 1px solid #ccc;
+}
+
+.cell {
+    border: 0.1px solid #ddd;
+    width: 15px;
+    height: 15px;
+}
+
+#clear-btn {
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}

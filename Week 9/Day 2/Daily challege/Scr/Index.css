@@ -1,0 +1,44 @@
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #f3f4f6;
+  margin: 0;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+}
+.planner-layout {
+  width: 100%;
+  max-width: 600px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+.main-header { text-align: center; color: #111827; margin-bottom: 25px; font-weight: 800; }
+.date-picker-box { background: #f9fafb; padding: 15px; border-radius: 8px; border: 1px solid #e5e7eb; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+.date-label { font-weight: 600; color: #374151; font-size: 14px; }
+.date-input { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; color: #111827; outline: none; }
+.task-form { margin-bottom: 25px; }
+.input-row { display: flex; gap: 10px; }
+.input-field { flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; }
+.edit-input { padding: 6px 10px; }
+.error-hint { color: #dc2626; font-size: 12px; font-weight: 500; margin: 5px 0 0 0; }
+button { font-size: 14px; font-weight: 600; padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+.btn-success { background: #2563eb; color: #ffffff; }
+.btn-success:hover { background: #1d4ed8; }
+.task-list-wrapper { background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; }
+.section-title { margin-top: 0; color: #334155; font-size: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px; }
+.highlight-date { color: #2563eb; font-weight: 700; }
+.empty-state { color: #64748b; font-style: italic; font-size: 14px; text-align: center; margin: 20px 0; }
+.planner-items-list { list-style: none; padding: 0; margin: 0; }
+.planner-item { background: white; border: 1px solid #e2e8f0; padding: 12px; border-radius: 6px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+.planner-item:last-child { margin-bottom: 0; }
+.view-mode-container, .edit-mode-container { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px; }
+.task-content-text { color: #1e293b; font-size: 14px; word-break: break-word; flex: 1; }
+.item-controls { display: flex; gap: 8px; }
+.btn-edit { background: #e2e8f0; color: #334155; padding: 6px 12px; font-size: 12px; }
+.btn-edit:hover { background: #cbd5e1; }
+.btn-danger { background: #fee2e2; color: #dc2626; padding: 6px 12px; font-size: 12px; }
+.btn-danger:hover { background: #fca5a5; }
+.btn-save { background: #10b981; color: white; padding: 6px 12px; font-size: 12px; }
+.btn-cancel { background: #64748b; color: white; padding: 6px 12px; font-size: 12px; }

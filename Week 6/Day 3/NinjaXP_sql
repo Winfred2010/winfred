@@ -1,0 +1,29 @@
+-- 1. Get available G/PG rated films (not currently rented)
+SELECT DISTINCT f.title, f.rating
+FROM film f
+JOIN inventory i ON f.film_id = i.film_id
+LEFT JOIN rental r ON i.inventory_id = r.inventory_id AND r.return_date IS NULL
+WHERE f.rating IN ('G', 'PG')
+  AND r.rental_id IS NULL;
+
+-- 2. Create Waiting List table
+-- References: film_id (to know the movie) and customer_id (to know the person)
+CREATE TABLE children_waiting_list (
+    waiting_id SERIAL PRIMARY KEY,
+    film_id INT NOT NULL REFERENCES film(film_id) ON DELETE CASCADE,
+    customer_id INT NOT NULL REFERENCES customer(customer_id) ON DELETE CASCADE,
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Add test data
+INSERT INTO children_waiting_list (film_id, customer_id)
+VALUES 
+    (1, 5), -- Customer 5 waiting for Academy Dinosaur
+    (1, 12), -- Customer 12 waiting for Academy Dinosaur
+    (15, 7); -- Customer 7 waiting for Alien Center
+
+-- 4. Retrieve number of people waiting per movie
+SELECT f.title, COUNT(cwl.waiting_id) AS people_waiting
+FROM children_waiting_list cwl
+JOIN film f ON cwl.film_id = f.film_id
+GROUP BY f.title;

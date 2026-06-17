@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winfred Project</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
+    <style>
+        body {
+            padding-top: 70px;
+        }
+
+        /*  Black Navbar */
+        .navbar-custom {
+            background-color: #000 !important;
+        }
+
+        /* Jumbotron Centering */
+        .jumbotron {
+            background-color: #eeeeee;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Navbar Form Styling */
+        .nav-login-input {
+            width: 150px !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. Single-Line Horizontal Navbar -->
+    <nav class="navbar navbar-expand-xl navbar-dark navbar-custom fixed-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand fw-bold" href="#">Winfred Project</a>
+
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navContent">
+                <!-- Navigation Links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Dropdown</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- One-Line Sign-in Form (Right Aligned) -->
+                <form class="d-flex align-items-center gap-2">
+                    <input class="form-control form-control-sm nav-login-input" type="email" placeholder="Email">
+                    <input class="form-control form-control-sm nav-login-input" type="password" placeholder="Password">
+                    <button class="btn btn-success btn-sm px-3" type="submit">Sign in</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. Centered Hello World Section -->
+    <header class="jumbotron">
+        <div class="container">
+            <h1 class="display-3">Hello, world!</h1>
+            <p class="lead">This is Exercise #9. It includes a large callout called a jumbotron and three supporting
+                pieces of content.</p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+        </div>
+    </header>
+
+    <!-- 3. Horizontal Headings (Three Columns) -->
+    <main class="container py-5">
+        <div class="row text-start g-5">
+            <!-- Heading 1 -->
+            <div class="col-md-4">
+                <h2>Heading</h2>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor
+                    mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                <a class="btn btn-outline-secondary" href="#"><i class="fa-solid fa-chart-simple me-1"></i> View
+                    details</a>
+            </div>
+
+            <!-- Heading 2 -->
+            <div class="col-md-4">
+                <h2>Heading</h2>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor
+                    mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                <a class="btn btn-outline-secondary" href="#"><i class="fa-solid fa-chart-simple me-1"></i> View
+                    details</a>
+            </div>
+
+            <!-- Heading 3 -->
+            <div class="col-md-4">
+                <h2>Heading <span class="badge bg-info fs-6 align-middle">New</span></h2>
+                <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula
+                    porta felis euismod semper.</p>
+                <a class="btn btn-outline-secondary" href="#"><i class="fa-solid fa-chart-simple me-1"></i> View
+                    details</a>
+            </div>
+        </div>
+        <hr class="mt-5">
+    </main>
+
+    <footer class="container pb-4">
+        <p>&copy; Winfred Project 2026</p>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net"></script>
+</body>
+
+</html>

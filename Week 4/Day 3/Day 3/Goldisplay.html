@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Display Submitted Data</title>
+</head>
+<body>
+    <!-- The section where data will be displayed -->
+    <section id="data-section">
+        <h2>Submitted Information:</h2>
+        <p id="display-output">Waiting for data...</p>
+    </section>
+
+    <script>
+        // Get the data from the URL query string
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        //  Retrieve values by their 'name' attributes
+        const firstName = urlParams.get('name');
+        const lastName = urlParams.get('lastname');
+
+        //  Display the data in the DOM if it exists
+        const output = document.getElementById('display-output');
+        if (firstName && lastName) {
+            output.textContent = `Hello, ${firstName} ${lastName}!`;
+        } else {
+            output.textContent = "No data received.";
+        }
+    </script>
+</body>
+</html>

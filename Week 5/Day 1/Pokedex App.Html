@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex App</title>
+    <style>
+        body { font-family: 'Courier New', Courier, monospace; display: flex; flex-direction: column; align-items: center; background-color: #f0f0f0; padding: 20px; }
+        .logo { width: 300px; margin-bottom: 20px; }
+        
+        .pokedex-container { width: 400px; height: 500px; background-color: #e74c3c; border-radius: 20px; border: 10px solid #c0392b; box-shadow: 10px 10px 0px #333; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+        .screen { width: 250px; height: 180px; background-color: #98cb98; border: 5px solid #333; border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 20px; cursor: pointer; transition: 0.2s; }
+        .screen:hover { background-color: #7eb37e; }
+        .screen img { width: 140px; image-rendering: pixelated; }
+        
+        .info-display { width: 250px; background: #333; color: #51ff00; padding: 10px; border-radius: 5px; font-size: 0.9rem; min-height: 110px; }
+
+        .controls { display: flex; gap: 10px; margin-top: 20px; }
+        button { padding: 10px 15px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
+        .btn-random { background-color: #f1c40f; }
+        .btn-nav { background-color: #3498db; color: white; }
+        
+        .loading-spinner { border: 4px solid rgba(0,0,0,0.1); border-left-color: #333; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .hint { font-size: 0.7rem; color: white; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <img src="https://wikimedia.org" alt="Pokemon Logo" class="logo">
+
+    <div class="pokedex-container">
+        <div class="screen" id="screen" title="Click to see!">
+            <p>Press Random!</p>
+        </div>
+        <p class="hint">Click the screen</p>
+        <div class="info-display" id="info">
+            <p>ID: ???</p>
+            <p>Name: ???</p>
+            <p>Type: ???</p>
+            <p>Weight: ??? | Height: ???</p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-nav" id="prevBtn">← Previous</button>
+        <button class="btn-random" id="randomBtn">Randomize</button>
+        <button class="btn-nav" id="nextBtn">Next →</button>
+    </div>
+
+    <script>
+        let currentPokemon = null;
+        let isShiny = false;
+        const totalPokemon = 1025;
+
+        const screen = document.getElementById('screen');
+        const infoBox = document.getElementById('info');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const randomBtn = document.getElementById('randomBtn');
+
+        async function fetchPokemon(id) {
+            screen.innerHTML = '<div class="loading-spinner"></div>';
+            infoBox.innerHTML = '<p>Searching...</p>';
+            isShiny = false; // Reset to normal version on new fetch
+            
+            try {
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+                if (!response.ok) throw new Error("Not found");
+                
+                currentPokemon = await response.json();
+                updateUI();
+            } catch (error) {
+                infoBox.innerHTML = '<p style="color:red">Oh no! That Pokemon isn’t available…</p>';
+                screen.innerHTML = '<p style="font-size: 3rem;">❌</p>'; // More styled error
+                currentPokemon = null;
+            }
+        }
+
+        function updateUI() {
+            if (!currentPokemon) return;
+            
+            // Toggle between regular and shiny sprites
+            const spriteUrl = isShiny ? 
+                currentPokemon.sprites.front_shiny : 
+                currentPokemon.sprites.front_default;
+
+            screen.innerHTML = `<img src="${spriteUrl}" alt="${currentPokemon.name}">`;
+            
+            infoBox.innerHTML = `
+                <p>ID: ${currentPokemon.id}</p>
+                <p>Name: ${currentPokemon.name.toUpperCase()}</p>
+                <p>Weight: ${currentPokemon.weight / 10}kg | Height: ${currentPokemon.height / 10}m</p>
+                <p>Type: ${currentPokemon.types.map(t => t.type.name).join(', ')}</p>
+            `;
+        }
+
+        // Toggle click
+        screen.addEventListener('click', () => {
+            if (currentPokemon) {
+                isShiny = !isShiny;
+                updateUI();
+            }
+        });
+
+        randomBtn.addEventListener('click', () => {
+            const randomId = Math.floor(Math.random() * totalPokemon) + 1;
+            fetchPokemon(randomId);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPokemon) {
+                const nextId = currentPokemon.id >= totalPokemon ? 1 : currentPokemon.id + 1;
+                fetchPokemon(nextId);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPokemon) {
+                const prevId = currentPokemon.id <= 1 ? totalPokemon : currentPokemon.id - 1;
+                fetchPokemon(prevId);
+            }
+        });
+
+        // Initial call to set up the UI, perhaps with a default or random Pokemon
+        randomBtn.click(); // Simulate a click to load a random Pokemon on page load
+    </script>
+</body>
+</html>

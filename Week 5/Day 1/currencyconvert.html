@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Currency Converter</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+            background: url('https://images.unsplash.com/photo-1580519542036-c47de6196ba5?q=80&w=2000') center/cover;
+        }
+        .card {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 10px;
+            width: 350px;
+            text-align: center;
+            color: white;
+        }
+        select, input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid white;
+            color: white;
+            border-radius: 4px;
+        }
+        .row { display: flex; gap: 10px; }
+        #result {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Currency Converter</h1>
+        <label>From:</label>
+        <select id="from"></select>
+        <label>To:</label>
+        <select id="to"></select>
+        <label>Amount:</label>
+        <div class="row">
+            <input type="number" id="amt" value="1">
+            <button id="btn">Convert</button>
+        </div>
+        <div id="result">---</div>
+    </div>
+
+    <script>
+        const KEY = 'YOUR_API_KEY';
+        const fromS = document.getElementById('from');
+        const toS = document.getElementById('to');
+        const resD = document.getElementById('result');
+
+        async function init() {
+            const data = await (await fetch(`https://v6.exchangerate-api.com/v6/${KEY}/codes`)).json();
+            data.supported_codes.forEach(([c]) => {
+                const opt = `<option value="${c}">${c}</option>`;
+                fromS.innerHTML += opt; toS.innerHTML += opt;
+            });
+            fromS.value = "USD"; toS.value = "ILS";
+        }
+
+        async function convert() {
+            const data = await (await fetch(`https://v6.exchangerate-api.com/v6/${KEY}/pair/${fromS.value}/${toS.value}/${document.getElementById('amt').value}`)).json();
+            resD.innerText = `${data.conversion_result.toFixed(5)} ${toS.value}`;
+        }
+
+        document.getElementById('btn').addEventListener('click', convert);
+        init();
+    </script>
+</body>
+</html>
