@@ -1,0 +1,6 @@
+{
+  "name": "JWT Authentication Guide",
+  "description": "An interactive, step-by-step learning guide and full-stack sandbox playground for JWT Authentication in Node.js with Express.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

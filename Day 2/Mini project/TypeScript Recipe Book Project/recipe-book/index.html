@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Book</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="recipe-app">
+        <!-- Header -->
+        <header class="recipe-header">
+          <h1>&#127860; Recipe Book</h1>
+          <p class="subtitle">Manage your favorite recipes</p>
+        </header>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+          <div class="stat-item">
+            <span class="stat-label">Recipes:</span>
+            <span id="recipeCount" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Favorites:</span>
+            <span id="favoriteCount" class="stat-value">0</span>
+          </div>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">All Recipes</button>
+          <button class="filter-btn" data-filter="favorites">&#9733; Favorites</button>
+        </div>
+
+        <!-- Recipe Form -->
+        <form id="recipeEntryForm" class="recipe-form">
+          <h2>Add New Recipe</h2>
+          <div class="form-group">
+            <label for="recipeTitle">Recipe Title</label>
+            <input
+              type="text"
+              id="recipeTitle"
+              placeholder="e.g., Homemade Pizza"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="ingredients">Ingredients <span class="hint">(one per line)</span></label>
+            <textarea
+              id="ingredients"
+              placeholder="Flour&#10;Water&#10;Yeast&#10;Salt"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="instructions">Instructions</label>
+            <textarea
+              id="instructions"
+              placeholder="Enter step-by-step cooking instructions..."
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="submit-btn">&#43; Add Recipe</button>
+        </form>
+
+        <!-- Recipe List Container -->
+        <div id="recipeContainer" class="recipe-container"></div>
+
+        <!-- Clear All Button -->
+        <div class="clear-section">
+          <button id="clearRecipesButton" class="clear-btn">&#128465; Clear All Recipes</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "Collaborative Story Studio",
+  "description": "A real-time collaborative writing studio with robust comments, git-style version histories, diff comparisons, contributor cursor tracking, and JWT-secured websockets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
